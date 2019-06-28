@@ -51,5 +51,13 @@ ADD ./${NGINX_CONF_PATH}/conf.d/  ${NGINX_CONF_PATH}/conf.d/
 COPY ./${NGINX_CONF_PATH}/nginx.conf  ${NGINX_CONF_PATH}/nginx.conf
 RUN mkdir -p ${NGINX_LOG_PATH}/default ${NGINX_LOG_PATH}/ruby
 
+# port setting
+EXPOSE 80
+EXPOSE 443
+
+# volume setting
+VOLUME /var/log/nginx
+VOLUME /var/log/unicorn
+
 ENTRYPOINT bundle exec unicorn -c ${DOCUMENT_ROOT}/app/config/unicorn.rb -D -E ${UNICORN_ENV} \
  && nginx -g "daemon off;";
