@@ -3,13 +3,13 @@
 * Dockerイメージのビルド
 
 ```
-$ docker build -t katsuya61/rubyapp .
+$ docker build -t katsuya61/rubyapp . --no-cache=true
 ```
 
 * コンテナの起動
 
 ```
-$ docker run -itd -p 80:80 -p 443:443 --name container001 -h host001 katsuya61/rubyonrails5
+$ docker run -itd -p 80:80 -p 443:443 --name container001 -h host001 katsuya61/rubyapp
 ```
 
 * コンテナの削除

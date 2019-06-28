@@ -1,10 +1,13 @@
 FROM nginx:1.17.0-alpine
 
-# for rbenv env
+ENV DOCUMENT_ROOT /var/www/html
+ENV NGINX_CONF_PATH /etc/nginx
+ENV NGINX_LOG_PATH /var/log/nginx
 ENV PATH /usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH
 ENV RBENV_ROOT /usr/local/rbenv
 ENV RUBY_VERSION 2.5.1
 
+# for rbenv and ruby setting
 RUN apk add --update \
   bash \
   git \
@@ -32,3 +35,11 @@ RUN rbenv install $RUBY_VERSION \
  && rbenv global $RUBY_VERSION
 
 RUN gem install bundler
+
+# for nginx setting
+ADD ./${NGINX_CONF_PATH}/ssl/  ${NGINX_CONF_PATH}/ssl/
+ADD ./${NGINX_CONF_PATH}/conf.d/  ${NGINX_CONF_PATH}/conf.d/
+COPY ./${NGINX_CONF_PATH}/nginx.conf  ${NGINX_CONF_PATH}/nginx.conf
+RUN mkdir -p ${NGINX_LOG_PATH}/default ${NGINX_LOG_PATH}/ruby
+RUN mkdir -p ${DOCUMENT_ROOT}
+ADD ./${DOCUMENT_ROOT}/index.html ${DOCUMENT_ROOT}/index.html
